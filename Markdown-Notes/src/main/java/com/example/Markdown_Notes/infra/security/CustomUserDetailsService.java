@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
 import com.example.Markdown_Notes.user.User;
 import com.example.Markdown_Notes.user.UserRepository;
 
+
+
 @Component
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService{
     @Autowired 
     private UserRepository userRepository;
