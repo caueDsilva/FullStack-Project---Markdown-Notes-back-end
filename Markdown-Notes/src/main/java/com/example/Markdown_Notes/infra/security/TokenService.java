@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.Markdown_Notes.user.User;
 
 @Service
@@ -30,5 +31,14 @@ public class TokenService {
 
     public Instant generateExpirationDate(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")).truncatedTo(ChronoUnit.SECONDS);
-    } 
+    }
+
+    public String validateToken(String token){
+        try{
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm).withIssuer("login-auth-api").build().verify(token).getSubject();
+        } catch (JWTVerificationException e){
+            return null;
+        }
+    }
 }
