@@ -50,7 +50,7 @@ public class AuthController {
             newUser.setPassword(passwordEncoder.encode(body.password()));
             this.userRepository.save(newUser);
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
     }
     
 
