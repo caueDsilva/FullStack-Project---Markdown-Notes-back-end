@@ -10,6 +10,8 @@ import com.example.Markdown_Notes.DTO.UserResponseDTO;
 import com.example.Markdown_Notes.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping({"/api/users", "/user"})
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping({"/me", "/profile"})
     public ResponseEntity<UserResponseDTO> getAuthenticatedUserProfile(@AuthenticationPrincipal User user) {
@@ -29,4 +32,12 @@ public class UserController {
 
         return ResponseEntity.ok(UserResponseDTO.fromEntity(freshUser));
     }
+
+    @GetMapping("/email")
+    public ResponseEntity<UserResponseDTO> findByEmail(@RequestParam String email) {
+
+        User user = userService.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o email: " + email));
+        return ResponseEntity.ok(UserResponseDTO.fromEntity(user));
+    }
+    
 }
