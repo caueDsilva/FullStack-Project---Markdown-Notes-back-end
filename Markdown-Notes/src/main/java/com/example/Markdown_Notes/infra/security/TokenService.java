@@ -1,9 +1,6 @@
 package com.example.Markdown_Notes.infra.security;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,28 +13,40 @@ import com.example.Markdown_Notes.user.User;
 
 @Service
 public class TokenService {
-    @Value("${api.security.token.secret}")
+    @Value("${api.security.token.secret:default-secret-key-for-markdown-notes-api-123456}")
     private String secret;
 
-    public String generateToken(User user){
-        try{
+    @Value("${api.security.token.expiration:7200000}")
+    private Long expirationMillis;
+
+    public String generateToken(User user) {
+        try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create().withIssuer("login-auth-api").withSubject(user.getId()).withExpiresAt(generateExpirationDate()).sign(algorithm);
-            return token;
-        } catch (JWTCreationException e){
+            return JWT.create()
+                    .withIssuer("markdown-notes-api")
+                    .withSubject(user.getEmail())
+                    .withClaim("id", user.getId())
+                    .withClaim("name", user.getName())
+                    .withExpiresAt(generateExpirationDate())
+                    .sign(algorithm);
+        } catch (JWTCreationException e) {
             throw new RuntimeException("Error generating token", e);
         }
     }
 
-    public Instant generateExpirationDate(){
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")).truncatedTo(ChronoUnit.SECONDS);
+    public Instant generateExpirationDate() {
+        return Instant.now().plusMillis(expirationMillis);
     }
 
-    public String validateToken(String token){
-        try{
+    public String validateToken(String token) {
+        try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm).withIssuer("login-auth-api").build().verify(token).getSubject();
-        } catch (JWTVerificationException e){
+            return JWT.require(algorithm)
+                    .withIssuer("markdown-notes-api")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (JWTVerificationException e) {
             return null;
         }
     }
