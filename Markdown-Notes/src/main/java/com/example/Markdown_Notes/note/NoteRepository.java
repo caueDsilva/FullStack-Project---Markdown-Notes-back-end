@@ -3,7 +3,11 @@ package com.example.Markdown_Notes.note;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.example.Markdown_Notes.DTO.NoteCreateRequest;
 import com.example.Markdown_Notes.DTO.NoteUpdateRequest;
+import com.example.Markdown_Notes.user.User;
+
+import jakarta.transaction.Transactional;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
     
@@ -11,7 +15,10 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     Optional<Note> updateByIdAndUserId(Long id, Long userId, NoteUpdateRequest noteUpdateRequest);
 
-    Optional<Note> deleteByIdAndUserId(Long id, Long userId);
+    Note CreateNote(User user, NoteCreateRequest request);
+
+    @Transactional
+    void deleteByIdAndUserId(Long id, Long userId);
 
 
     

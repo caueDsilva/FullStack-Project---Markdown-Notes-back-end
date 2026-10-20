@@ -11,5 +11,4 @@ public record NoteUpdateRequest(
     @NotNull String title,
     Boolean favorite,
     Boolean archived
-) {
-}
+) {}

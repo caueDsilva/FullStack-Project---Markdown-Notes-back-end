@@ -1,8 +1,10 @@
 package com.example.Markdown_Notes.note;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
+import com.example.Markdown_Notes.DTO.NoteCreateRequest;
 import com.example.Markdown_Notes.DTO.NoteUpdateRequest;
 import com.example.Markdown_Notes.exception.ResourceNotFoundException;
 
@@ -36,7 +38,7 @@ public class NoteService {
         note.setIsArchived(noteUpdateRequest.archived());
 
         if(noteUpdateRequest.folderId() != null){
-            Folder folder = folderRepository.findByIdUserId(noteUpdateRequest.folderId(), userId);
+            Folder folder = folderRepository.findByIdAndUserId(noteUpdateRequest.folderId(), userId);
             note.setFolder(folder)
         } else {
             note.setFolder(null);
@@ -45,8 +47,26 @@ public class NoteService {
         return noteRepository.save(note);
     }
 
-    public Optional<Note> deleteByIdAndUserId(Long id, Long userId) {
-        return noteRepository.deleteByIdAndUserId(id, userId);
+    @Transactional 
+    public Note createNote(User user, NoteCreateRequest request){
+        Note note = new Note();
+        note.setUser(user);
+        note.setTitle(request.title());
+        note.setContent(request.content());
+
+        if (request.folderId() != null){
+            Folder folder = folderRepository.findByIdAndUserId(request.folderId(), user.getId());
+            note.setFolder(folder);
+        }
+
+        return noteRepository.save(note);
+    }
+
+    @Transactional
+    public void deleteByIdAndUserId(Long id, Long userId) {
+        Note note = findByIdAndUserId(id, userId);
+        // note.setDeletedAt(LocalDateTime.now());
+        noteRepository.delete(note);
     }
 
 }
