@@ -7,8 +7,7 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.example.Markdown_Notes.MarkdownNotesApplication",
             "projectName": "Markdown-Notes",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/Markdown-Notes/.env"
         }
     ]
 }
