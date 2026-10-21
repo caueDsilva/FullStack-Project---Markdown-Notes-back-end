@@ -1,35 +1,38 @@
 package com.example.Markdown_Notes.note;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.Markdown_Notes.DTO.NoteCreateRequest;
 import com.example.Markdown_Notes.DTO.NoteUpdateRequest;
 import com.example.Markdown_Notes.exception.ResourceNotFoundException;
+//import com.example.Markdown_Notes.folder.Folder;
+//import com.example.Markdown_Notes.folder.FolderRepository;
+import com.example.Markdown_Notes.user.User;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class NoteService {
-    
+
     private final NoteRepository noteRepository;
     //private final FolderRepository folderRepository;
 
-    public NoteService(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
+    @Transactional 
+    public List<Note> findByUserId(Long userId) {
+        return noteRepository.findByUserId(userId);
     }
 
-    public Note findByIdAndUserId(Long id, Long userId) {
-    return noteRepository.findByIdAndUserId(id, userId)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                    "Nota não encontrada " + id + " do usuário " + userId));
+    @Transactional(readOnly = true)
+    public Note findByIdAndUserId(Long id,Long userId){
+        return noteRepository.findByIdAndUserId(id, userId)
+        .orElseThrow(() -> new ResourceNotFoundException("Nota Não encontrada"));
     }
 
     @Transactional
-    public Optional<Note> updateByIdAndUserId(Long id, Long userId, NoteUpdateRequest noteUpdateRequest) {
+    public Note updateByIdAndUserId(Long id, Long userId, NoteUpdateRequest noteUpdateRequest) {
         Note note = findByIdAndUserId(id, userId);
         
         note.setTitle(noteUpdateRequest.title());
@@ -37,12 +40,12 @@ public class NoteService {
         note.setIsFavorite(noteUpdateRequest.favorite());
         note.setIsArchived(noteUpdateRequest.archived());
 
-        if(noteUpdateRequest.folderId() != null){
+        /*if(noteUpdateRequest.folderId() != null){
             Folder folder = folderRepository.findByIdAndUserId(noteUpdateRequest.folderId(), userId);
             note.setFolder(folder)
         } else {
             note.setFolder(null);
-        }
+        }*/
 
         return noteRepository.save(note);
     }
@@ -54,10 +57,10 @@ public class NoteService {
         note.setTitle(request.title());
         note.setContent(request.content());
 
-        if (request.folderId() != null){
+        /*if (request.folderId() != null){
             Folder folder = folderRepository.findByIdAndUserId(request.folderId(), user.getId());
             note.setFolder(folder);
-        }
+        }*/
 
         return noteRepository.save(note);
     }
