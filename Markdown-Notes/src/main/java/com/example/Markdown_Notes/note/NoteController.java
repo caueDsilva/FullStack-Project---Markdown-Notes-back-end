@@ -16,6 +16,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,5 +52,12 @@ public class NoteController {
     public ResponseEntity<NoteResponseDTO> updateNote(@AuthenticationPrincipal User user, @PathVariable long id, @Valid @RequestBody NoteUpdateRequest request){
         Note update = noteService.updateByIdAndUserId(id, user.getId(), request);
         return ResponseEntity.ok(NoteResponseDTO.fromEntity(update));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteNote(@AuthenticationPrincipal User user, @PathVariable long id){
+        noteService.deleteNote(id,user.getId());
+
+        return ResponseEntity.noContent().build();
     }
 }

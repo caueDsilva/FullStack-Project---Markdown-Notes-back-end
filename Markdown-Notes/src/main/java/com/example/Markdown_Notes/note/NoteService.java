@@ -65,7 +65,7 @@ public class NoteService {
     }
 
     @Transactional
-    public void deleteByIdAndUserId(Long id, Long userId) {
+    public void deleteNote(Long id, Long userId) {
         Note note = findByIdAndUserId(id, userId);
         // note.setDeletedAt(LocalDateTime.now());
         noteRepository.delete(note);
