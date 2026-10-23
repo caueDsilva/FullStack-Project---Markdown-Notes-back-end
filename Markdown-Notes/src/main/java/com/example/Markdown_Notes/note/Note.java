@@ -32,7 +32,7 @@ public class Note {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Long userId;
 
     @Column(nullable = false, length = 255)
     private String title;

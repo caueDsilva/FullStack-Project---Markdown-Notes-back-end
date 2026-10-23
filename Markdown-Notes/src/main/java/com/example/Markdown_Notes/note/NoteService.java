@@ -51,9 +51,9 @@ public class NoteService {
     }
 
     @Transactional 
-    public Note createNote(User user, NoteCreateRequest request){
+    public Note createNote(Long userId, NoteCreateRequest request){
         Note note = new Note();
-        note.setUser(user);
+        note.setUserId(userId);
         note.setTitle(request.title());
         note.setContent(request.content());
 
