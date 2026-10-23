@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.ResourceAccessException;
 
 import com.example.Markdown_Notes.DTO.FolderCreateRequest;
 import com.example.Markdown_Notes.DTO.FolderUpdateRequest;
@@ -17,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class FolderService {
     private final FolderRepository folderRepository;
 
-    @Transactional 
+    @Transactional(readOnly = true) 
     public List<Folder> findByUserId(Long userId){
         return folderRepository.findByUserId(userId);
     }
