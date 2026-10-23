@@ -8,7 +8,6 @@ import com.example.Markdown_Notes.DTO.NoteUpdateRequest;
 import com.example.Markdown_Notes.exception.ResourceNotFoundException;
 //import com.example.Markdown_Notes.folder.Folder;
 //import com.example.Markdown_Notes.folder.FolderRepository;
-import com.example.Markdown_Notes.user.User;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;

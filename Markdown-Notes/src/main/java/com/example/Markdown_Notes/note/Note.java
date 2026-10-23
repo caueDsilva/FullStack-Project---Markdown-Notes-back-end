@@ -1,8 +1,6 @@
 package com.example.Markdown_Notes.note;
 
 import java.time.LocalDateTime;
-
-import com.example.Markdown_Notes.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
