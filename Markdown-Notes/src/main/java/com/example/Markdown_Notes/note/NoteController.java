@@ -35,7 +35,7 @@ public class NoteController {
 
     @GetMapping()
     public ResponseEntity<List<NoteResponseDTO>> findAll(@AuthenticationPrincipal User user) {
-        List<NoteResponseDTO> notes = noteService.findByUserId(user.getId()).stream()
+        List<NoteResponseDTO> notes = noteService.findByUserId(user.getUserId()).stream()
         .map(NoteResponseDTO::fromEntity).toList();
 
         return ResponseEntity.ok(notes);
@@ -43,20 +43,20 @@ public class NoteController {
 
     @PostMapping 
     public ResponseEntity<NoteResponseDTO> createNote(@AuthenticationPrincipal User user, @Valid @RequestBody NoteCreateRequest request){
-        Note note = noteService.createNote(user.getId(), request);
+        Note note = noteService.createNote(user.getUserId(), request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(NoteResponseDTO.fromEntity(note));
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<NoteResponseDTO> updateNote(@AuthenticationPrincipal User user, @PathVariable long id, @Valid @RequestBody NoteUpdateRequest request){
-        Note update = noteService.updateByIdAndUserId(id, user.getId(), request);
+        Note update = noteService.updateByIdAndUserId(id, user.getUserId(), request);
         return ResponseEntity.ok(NoteResponseDTO.fromEntity(update));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNote(@AuthenticationPrincipal User user, @PathVariable long id){
-        noteService.deleteNote(id,user.getId());
+        noteService.deleteNote(id,user.getUserId());
 
         return ResponseEntity.noContent().build();
     }

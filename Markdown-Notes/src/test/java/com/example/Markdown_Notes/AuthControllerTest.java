@@ -78,7 +78,7 @@ class AuthControllerTest {
         LoginRequestDTO request = new LoginRequestDTO("alice@example.com", "password123");
 
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setName("Alice");
         user.setEmail("alice@example.com");
         user.setPassword("encodedPassword");

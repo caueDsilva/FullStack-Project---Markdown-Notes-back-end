@@ -25,7 +25,7 @@ class TokenServiceTest {
     @Test
     void shouldGenerateAndValidateTokenSuccessfully() {
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setName("Test User");
         user.setEmail("test@example.com");
 

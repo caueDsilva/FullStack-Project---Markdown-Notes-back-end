@@ -25,7 +25,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("markdown-notes-api")
                     .withSubject(user.getEmail())
-                    .withClaim("id", user.getId())
+                    .withClaim("id", user.getUserId())
                     .withClaim("name", user.getName())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);

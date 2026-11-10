@@ -30,7 +30,7 @@ public class FolderController {
 
     @GetMapping()
     public ResponseEntity<List<FolderResponseDTO>> findAll(@AuthenticationPrincipal User user){
-        List<FolderResponseDTO> folders = folderService.findByUserId(user.getId()).stream()
+        List<FolderResponseDTO> folders = folderService.findByUserId(user.getUserId()).stream()
         .map(FolderResponseDTO::fromEntity).toList();
 
         return ResponseEntity.ok(folders);
@@ -38,19 +38,19 @@ public class FolderController {
 
     @PostMapping
     public ResponseEntity<FolderResponseDTO> createFolder(@AuthenticationPrincipal User user,@Valid @RequestBody FolderCreateRequest request) {
-        Folder folder = folderService.createFolder(user.getId(), request);
+        Folder folder = folderService.createFolder(user.getUserId(), request);
         return ResponseEntity.status(HttpStatus.CREATED).body(FolderResponseDTO.fromEntity(folder));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<FolderResponseDTO> updateFolder(@AuthenticationPrincipal User user, @PathVariable Long id, @Valid @RequestBody FolderUpdateRequest request){
-        Folder folder = folderService.updateFolder(id, user.getId(), request);
+        Folder folder = folderService.updateFolder(id, user.getUserId(), request);
         return ResponseEntity.ok(FolderResponseDTO.fromEntity(folder));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFolder(@AuthenticationPrincipal User user, @PathVariable Long id ){
-        folderService.deleteFolder(id, user.getId());
+        folderService.deleteFolder(id, user.getUserId());
 
         return ResponseEntity.noContent().build();
     }
