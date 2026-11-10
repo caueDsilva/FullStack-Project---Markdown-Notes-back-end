@@ -14,7 +14,7 @@ public record UserResponseDTO(
 ) {
     public static UserResponseDTO fromEntity(User user) {
         return new UserResponseDTO(
-            user.getId(),
+            user.getUserId(),
             user.getName(),
             user.getEmail(),
             user.getRole(),
