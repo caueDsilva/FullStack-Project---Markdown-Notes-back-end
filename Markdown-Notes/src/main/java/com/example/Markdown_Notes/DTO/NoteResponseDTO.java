@@ -1,11 +1,9 @@
 package com.example.Markdown_Notes.DTO;
 import java.time.LocalDateTime;
-
 import com.example.Markdown_Notes.note.Note;
-
 public record NoteResponseDTO(
     Long id,
-    //Long folderId,
+    Long folderId,
     String title,
     String content,
     String slug,
@@ -17,12 +15,12 @@ public record NoteResponseDTO(
     public static NoteResponseDTO fromEntity(Note note) {
         return new NoteResponseDTO(
             note.getId(),
-            //note.getFolder() != null ? note.getFolder().getId() : null,
+            note.getFolder() != null ? note.getFolder().getId() : null,
             note.getTitle(),
             note.getContent(),
             note.getSlug(),
-            note.getIsFavorite(),
-            note.getIsArchived(),
+            Boolean.TRUE.equals(note.getIsFavorite()),
+            Boolean.TRUE.equals(note.getIsArchived()),
             note.getCreatedAt(),
             note.getUpdatedAt()
         );

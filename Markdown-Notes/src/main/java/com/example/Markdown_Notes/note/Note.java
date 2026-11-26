@@ -18,6 +18,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.example.Markdown_Notes.folder.Folder;
+import com.example.Markdown_Notes.user.User;
+
+
 @Entity 
 @Table (name = "notes")
 @Getter
@@ -32,7 +36,7 @@ public class Note {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private Long userId;
+    private User user;
 
     @Column(nullable = false, length = 255)
     private String title;
@@ -42,8 +46,9 @@ public class Note {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id")
-    //private Folder folder;
-    
+    private Folder folder;
+
+    @Column(name = "slug")
     private String slug;
 
     @Column(name = "created_at", nullable = false, updatable = false)
