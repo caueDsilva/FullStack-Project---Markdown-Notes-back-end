@@ -11,7 +11,6 @@ import com.example.Markdown_Notes.DTO.UserResponseDTO;
 import com.example.Markdown_Notes.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

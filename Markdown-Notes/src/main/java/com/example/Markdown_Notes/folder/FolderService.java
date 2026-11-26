@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.Markdown_Notes.DTO.FolderCreateRequest;
 import com.example.Markdown_Notes.DTO.FolderUpdateRequest;
-import com.example.Markdown_Notes.exception.ResourceNotFoundException;
+import com.example.Markdown_Notes.DTO.FolderCreateRequest;
+import com.example.Markdown_Notes.DTO.FolderUpdateRequest;
+import com.example.Markdown_Notes.user.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,13 +25,16 @@ public class FolderService {
 
     @Transactional(readOnly = true)
     public Folder findByIdAndUserId(Long id, Long userId){
-        return folderRepository.findByIdAndUserId(id, userId).orElseThrow(()-> new ResourceNotFoundException("Pasta nao encontrada"));
+        return folderRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new RuntimeException("Pasta nao encontrada"));
     }
 
     @Transactional 
     public Folder createFolder(Long userId, FolderCreateRequest request){
         Folder folder = new Folder();
-        folder.setUser_id(userId);
+        User user = new User();
+        user.setUserId(userId);
+        folder.setUser(user);
         folder.setName(request.name());
 
         return folderRepository.save(folder);

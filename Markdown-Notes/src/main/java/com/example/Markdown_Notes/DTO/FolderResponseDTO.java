@@ -15,7 +15,7 @@ public record FolderResponseDTO(
     public static FolderResponseDTO fromEntity(Folder folder){
         return new FolderResponseDTO(
             folder.getId(),
-            folder.getUser_id(),
+            folder.getUser() != null ? folder.getUser().getUserId() : null,
             folder.getName(),
             folder.getCreatedAt(),
             folder.getUpdatedAt()
